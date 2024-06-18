@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'rest_framework.authentication',
     'drf_spectacular',
     'netfields',
-    'corsheaders'
+    'corsheaders',
+    'core',
+    'user',
 ]
 
 MIDDLEWARE = [
