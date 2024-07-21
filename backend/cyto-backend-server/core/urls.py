@@ -1,3 +1,6 @@
+"""
+URls for the Core app.
+"""
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularSwaggerView
@@ -8,6 +11,8 @@ from . import views
 
 urlpatterns = [
     path('schema/', SpectacularAPIView.as_view(), name='api-schema'),
-    path('docs/', SpectacularSwaggerView.as_view(url_name='api-schema'), name='api-docs'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='api-schema'),
+        name='api-docs'
+    ),
     path('health-check/', views.health_check, name='health-check')
 ]
