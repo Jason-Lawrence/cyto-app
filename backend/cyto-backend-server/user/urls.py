@@ -1,3 +1,6 @@
+"""
+Registering URL paths for manipulating Users.
+"""
 from django.urls import path
 from user import views
 
