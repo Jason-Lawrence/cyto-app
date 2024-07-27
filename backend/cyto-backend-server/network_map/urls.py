@@ -7,9 +7,12 @@ from . import views
 
 router = DefaultRouter()
 router.register('network-maps', views.NetworkMapViewSet)
+nested = routers.NestedDefaultRouter(router, r'network-maps', lookup='network_map')
+nested.register('nodes', views.NodeViewSet)
 
 app_name = 'network_map'
 
 urlpatters = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('', include(nested.urls))
 ]
