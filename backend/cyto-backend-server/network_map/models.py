@@ -39,6 +39,7 @@ class Node(models.Model):
         network_map(:obj: network_map.models.NetworkMap): 
             The Network Map the node belongs too.
         id (str): The nodes Primary key.
+        label (str): The nodes label.
         parent (:obj: network_map.models.Node): The parent Node
         x (float): The x position of the node.
         y (float): The y position of the node.
@@ -56,6 +57,7 @@ class Node(models.Model):
         on_delete=models.CASCADE
     )
     id = models.CharField(max_length=100, primary_key=True)
+    label = models.CharField(max_length=75)
     parent = models.ForeignKey(
         'self',
         null=True,
@@ -83,7 +85,8 @@ class Edge(models.Model):
     Args:
         network_map(:obj: network_map.models.NetworkMap): 
             The Network Map the node belongs too.
-        id (str): The Edges Primary Key.
+        id (str): The edge's Primary Key.
+        label (str): The edge's label.
         source (:obj: network_map.models.Node):
             The source node for the edge.
         target(:obj: network_map.models.Node):
@@ -96,6 +99,7 @@ class Edge(models.Model):
         on_delete=models.CASCADE
     )
     id = models.CharField(max_length=100, primary_key=True)
+    label = models.CharField(max_length=75)
     source = models.ForeignKey(
         Node,
         related_name='source_node',
