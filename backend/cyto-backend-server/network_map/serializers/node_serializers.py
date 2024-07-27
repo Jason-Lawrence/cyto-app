@@ -6,7 +6,9 @@ from .. import models
 
 class NodeSerializer(serializers.ModelSerializer):
     """"""
-    parent = serializers.PrimaryKeyRelatedField()
+    parent = serializers.PrimaryKeyRelatedField(
+        queryset=models.Node.objects.all()
+    )
 
     class Meta:
         model = models.Node
@@ -31,7 +33,9 @@ class NodeSerializer(serializers.ModelSerializer):
 
 class NodeDetailSerializer(NodeSerializer):
     """"""
-    network_map = serializers.PrimaryKeyRelatedField()
+    network_map = serializers.PrimaryKeyRelatedField(
+        queryset=models.NetworkMap.objects.all()
+    )
 
     class Meta(NodeSerializer.Meta):
         fields = (
