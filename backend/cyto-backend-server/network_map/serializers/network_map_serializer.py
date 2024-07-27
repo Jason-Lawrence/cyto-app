@@ -2,6 +2,7 @@
 from rest_framework import serializers
 
 from .. import models
+from . import node_serializers
 
 
 class NetworkMapSerializer(serializers.ModelSerializer):
@@ -31,7 +32,7 @@ class NetworkMapSerializer(serializers.ModelSerializer):
 
 class NetworkMapDetailSerializer(NetworkMapSerializer):
     """"""
-    nodes = None
+    nodes = node_serializers.NodeSerializer(many=True, required=False)
     edges = None    
 
     class Meta(NetworkMapSerializer.Meta):
