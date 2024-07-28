@@ -12,7 +12,7 @@ class NetworkMapSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'description',
             'created_at', 'last_updated',
-            'is_public'
+            'is_public', 'layout'
         ]
         read_only_fields = ['id', 'created_at', 'last_updated']
 
@@ -37,7 +37,7 @@ class NetworkMapDetailSerializer(NetworkMapSerializer):
 
     class Meta(NetworkMapSerializer.Meta):
         fields = (NetworkMapSerializer.Meta.fields + 
-                  ['layout', 'nodes', 'edges'])
+                  ['nodes', 'edges'])
         
         
     
