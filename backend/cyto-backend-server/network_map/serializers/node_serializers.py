@@ -7,15 +7,16 @@ from .. import models
 class NodeSerializer(serializers.ModelSerializer):
     """"""
     parent = serializers.PrimaryKeyRelatedField(
-        queryset=models.Node.objects.all()
+        queryset=models.Node.objects.all(),
+        required=False
     )
 
     class Meta:
         model = models.Node
         fields = [
-            'id', 'label', 'parent'
+            'id', 'nid', 'label', 'parent'
         ]
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'nid']
 
     def create(self, validated_data):
         """"""
@@ -34,7 +35,8 @@ class NodeSerializer(serializers.ModelSerializer):
 class NodeDetailSerializer(NodeSerializer):
     """"""
     network_map = serializers.PrimaryKeyRelatedField(
-        queryset=models.NetworkMap.objects.all()
+        queryset=models.NetworkMap.objects.all(),
+        required=False
     )
 
     class Meta(NodeSerializer.Meta):

@@ -27,7 +27,7 @@ class PrivateNetworkMapAPITests(BaseAPITests):
         self.client.force_authenticate(self.user)
 
     def test_retrieve_network_maps(self):
-        """"""
+        """Test retrieving a list of network maps."""
         self.create_network_map(user=self.user)
         res = self.client.get(self.network_map_list_url())
         self.assertEqual(res.status_code, status.HTTP_200_OK)

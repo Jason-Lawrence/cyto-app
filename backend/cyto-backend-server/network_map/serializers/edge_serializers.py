@@ -14,13 +14,17 @@ class EdgeSerializer(serializers.ModelSerializer):
         queryset=models.Node.objects.all()
     )
     network_map = serializers.PrimaryKeyRelatedField(
-        queryset=models.NetworkMap.objects.all()
+        queryset=models.NetworkMap.objects.all(),
+        required=False
     )
     
     class Meta:
         model = models.Edge
-        fields = ['id', 'network_map','label', 'source', 'target', 'pannable']
-        read_only_fields = ['id']
+        fields = [
+            'id', 'eid', 'network_map','label', 
+            'source', 'target', 'pannable'
+        ]
+        read_only_fields = ['id', 'eid']
 
     def create(self, validated_data):
         """"""

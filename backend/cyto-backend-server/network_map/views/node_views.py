@@ -16,6 +16,9 @@ class NodeViewSet(viewsets.ModelViewSet):
         """"""
         if self.action == 'list':
             return serializers.NodeSerializer
+        
+        # elif self.action in ['update', 'partial_update']:
+        #     return serializers.NodeUpdateSerializer
 
         else:
             return self.serializer_class
@@ -29,6 +32,7 @@ class NodeViewSet(viewsets.ModelViewSet):
         )
 
     def create(self, request, *args, **kwargs):
+        request.data._mutable = True
         request.data['network_map'] = self.kwargs['network_map_pk']
+        request.data._mutable = False
         return super().create(request, *args, **kwargs)
-

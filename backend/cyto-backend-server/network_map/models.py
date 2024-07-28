@@ -1,6 +1,7 @@
 """
 Models for the Network Map app.
 """
+from typing import Any
 from django.db import models
 from django.conf import settings
 
@@ -56,7 +57,7 @@ class Node(models.Model):
         related_name='nodes',
         on_delete=models.CASCADE
     )
-    id = models.CharField(max_length=100, primary_key=True)
+    nid = models.CharField(max_length=100)
     label = models.CharField(max_length=75)
     parent = models.ForeignKey(
         'self',
@@ -73,10 +74,14 @@ class Node(models.Model):
     classes = models.CharField(max_length=255)
     style = models.JSONField(null=True, blank=True)
     scratch = models.JSONField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.nid = self.label.replace(' ', '_').lower().strip()
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return self.id
-    
+
 
 class Edge(models.Model):
     """
@@ -98,7 +103,7 @@ class Edge(models.Model):
         related_name='edges',
         on_delete=models.CASCADE
     )
-    id = models.CharField(max_length=100, primary_key=True)
+    eid = models.CharField(max_length=100)
     label = models.CharField(max_length=75)
     source = models.ForeignKey(
         Node,
@@ -111,6 +116,10 @@ class Edge(models.Model):
         on_delete=models.CASCADE
     )
     pannable = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        self.eid = f'edge_{self.source.nid} -> {self.target.nid}'
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return self.id

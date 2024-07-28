@@ -22,5 +22,7 @@ class EdgeViewSet(viewsets.ModelViewSet):
         )
 
     def create(self, request, *args, **kwargs):
+        request.data._mutable = True
         request.data['network_map'] = self.kwargs['network_map_pk']
+        request.data._mutable = False
         return super().create(request, *args, **kwargs)
