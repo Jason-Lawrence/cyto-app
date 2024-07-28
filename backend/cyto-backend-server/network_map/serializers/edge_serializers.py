@@ -7,9 +7,15 @@ from .. import models
 
 class EdgeSerializer(serializers.ModelSerializer):
     """"""
-    source = serializers.PrimaryKeyRelatedField()
-    target = serializers.PrimaryKeyRelatedField()
-    network_map = serializers.PrimaryKeyRelatedField()
+    source = serializers.PrimaryKeyRelatedField(
+        queryset=models.Node.objects.all()
+    )
+    target = serializers.PrimaryKeyRelatedField(
+        queryset=models.Node.objects.all()
+    )
+    network_map = serializers.PrimaryKeyRelatedField(
+        queryset=models.NetworkMap.objects.all()
+    )
     
     class Meta:
         model = models.Edge
