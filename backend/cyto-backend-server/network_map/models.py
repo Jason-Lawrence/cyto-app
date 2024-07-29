@@ -1,7 +1,6 @@
 """
 Models for the Network Map app.
 """
-from typing import Any
 from django.db import models
 from django.conf import settings
 
@@ -9,17 +8,18 @@ from django.conf import settings
 class NetworkMap(models.Model):
     """
     Model for storing Network Maps.
-    
+
     Args:
         user (:obj: user.User): The User who created the Network Map.
         name (str): The name of the Network Map.
         description (str): The description of the Network Map.
-        layout (JSON): Store the Layout Properties. 
+        layout (JSON): Store the Layout Properties.
         is_public (bool): Flag for whether the Network Map is public to others.
             Defaults to False.
         created_at (DateTime): When the Network Map was created.
         last_updated (Datetime): When the Network Map was last updated.
     """
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
@@ -28,16 +28,16 @@ class NetworkMap(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
+    def __str__(self): # pylint: disable=invalid-str-returned
         return self.name
 
 
 class Node(models.Model):
     """
     Model for storing nodes.
-    
+
     Args:
-        network_map(:obj: network_map.models.NetworkMap): 
+        network_map(:obj: network_map.models.NetworkMap):
             The Network Map the node belongs too.
         id (str): The nodes Primary key.
         label (str): The nodes label.
@@ -52,10 +52,9 @@ class Node(models.Model):
         style (JSON): Style property overrides.
         scratch (JSON): Scratchpad data.
     """
+
     network_map = models.ForeignKey(
-        NetworkMap,
-        related_name='nodes',
-        on_delete=models.CASCADE
+        NetworkMap, related_name='nodes', on_delete=models.CASCADE
     )
     nid = models.CharField(max_length=100)
     label = models.CharField(max_length=75)
@@ -78,7 +77,7 @@ class Node(models.Model):
     def save(self, *args, **kwargs):
         self.nid = self.label.replace(' ', '_').lower().strip()
         super().save(*args, **kwargs)
-    
+
     def __str__(self):
         return self.id
 
@@ -86,9 +85,9 @@ class Node(models.Model):
 class Edge(models.Model):
     """
     Model for storing Edges.
-    
+
     Args:
-        network_map(:obj: network_map.models.NetworkMap): 
+        network_map(:obj: network_map.models.NetworkMap):
             The Network Map the node belongs too.
         id (str): The edge's Primary Key.
         label (str): The edge's label.
@@ -98,29 +97,23 @@ class Edge(models.Model):
             The target for the edge.
         pannable (bool): Whether dragging on the edge can cause panning.
     """
+
     network_map = models.ForeignKey(
-        NetworkMap,
-        related_name='edges',
-        on_delete=models.CASCADE
+        NetworkMap, related_name='edges', on_delete=models.CASCADE
     )
     eid = models.CharField(max_length=100)
     label = models.CharField(max_length=75)
     source = models.ForeignKey(
-        Node,
-        related_name='source_node',
-        on_delete=models.CASCADE
+        Node, related_name='source_node', on_delete=models.CASCADE
     )
     target = models.ForeignKey(
-        Node,
-        related_name='target_node',
-        on_delete=models.CASCADE
+        Node, related_name='target_node', on_delete=models.CASCADE
     )
     pannable = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.eid = f'edge_{self.source.nid} -> {self.target.nid}'
         super().save(*args, **kwargs)
-    
+
     def __str__(self):
         return self.id
-

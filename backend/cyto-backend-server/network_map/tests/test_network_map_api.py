@@ -2,7 +2,6 @@
 from .common import BaseAPITests
 
 from rest_framework import status
-from rest_framework.test import APIClient
 from django.db.models import Q
 
 from .. import models, serializers
@@ -10,6 +9,7 @@ from .. import models, serializers
 
 class PublicNetworkMapAPITests(BaseAPITests):
     """Test unauthenticated requests."""
+
     def test_auth_required(self):
         """Test user must be authenticated."""
         res = self.client.get(self.network_map_list_url())
@@ -18,6 +18,7 @@ class PublicNetworkMapAPITests(BaseAPITests):
 
 class PrivateNetworkMapAPITests(BaseAPITests):
     """Test authenticated endpoints"""
+
     def setUp(self):
         super().setUp()
         self.user = self.create_user(
@@ -38,28 +39,21 @@ class PrivateNetworkMapAPITests(BaseAPITests):
 
     def test_retrieve_network_maps_limited_user_or_public(self):
         """
-        Test retrieving network maps only returns network maps that 
+        Test retrieving network maps only returns network maps that
         are public or belonging to the user.
         """
         other_user = self.create_user(
-            email='other@example.com',
-            password='otherpass123'
+            email='other@example.com', password='otherpass123'
         )
         self.create_network_map(user=self.user)
         self.create_network_map(user=other_user)
-        self.create_network_map(
-            user=other_user,
-            **{'is_public': True}
-        )
+        self.create_network_map(user=other_user, **{'is_public': True})
         res = self.client.get(self.network_map_list_url())
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
         network_maps = (
-            models.NetworkMap.objects
-            .all()
-            .filter(
-                Q(user=self.user) | Q(is_public=True)
-            )
+            models.NetworkMap.objects.all()
+            .filter(Q(user=self.user) | Q(is_public=True))
             .order_by('-id')
         )
         serializer = serializers.NetworkMapSerializer(network_maps, many=True)
@@ -68,9 +62,7 @@ class PrivateNetworkMapAPITests(BaseAPITests):
     def test_get_network_map_detail(self):
         """Test getting a network maps details."""
         network_map = self.create_network_map(user=self.user)
-        res = self.client.get(
-            self.network_map_detail_url(network_map.id)
-        )
+        res = self.client.get(self.network_map_detail_url(network_map.id))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
         serializer = serializers.NetworkMapDetailSerializer(network_map)
@@ -81,13 +73,13 @@ class PrivateNetworkMapAPITests(BaseAPITests):
         payload = {
             'name': 'Test map',
             'description': 'Test description',
-            'layout': {
-                'name': 'circle'
-            },
-            'is_public': True
+            'layout': {'name': 'circle'},
+            'is_public': True,
         }
         res = self.client.post(
-            self.network_map_list_url(), payload, format='json'
+            self.network_map_list_url(),
+            payload,
+            format='json'
         )
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
@@ -99,9 +91,7 @@ class PrivateNetworkMapAPITests(BaseAPITests):
     def test_partial_update(self):
         """Test partial update of a network map."""
         network_map = self.create_network_map(user=self.user)
-        payload = {
-            'name': 'New name'
-        }
+        payload = {'name': 'New name'}
         res = self.client.patch(
             self.network_map_detail_url(network_map.id),
             payload
@@ -116,10 +106,8 @@ class PrivateNetworkMapAPITests(BaseAPITests):
         payload = {
             'name': 'New name',
             'description': 'new description',
-            'layout': {
-                'name': 'circle'
-            },
-            'is_public': True
+            'layout': {'name': 'circle'},
+            'is_public': True,
         }
         res = self.client.put(
             self.network_map_detail_url(network_map.id),
@@ -135,7 +123,9 @@ class PrivateNetworkMapAPITests(BaseAPITests):
     def test_delete_network_map(self):
         """Test deleting a network map."""
         network_map = self.create_network_map(user=self.user)
-        res = self.client.delete(self.network_map_detail_url(network_map.id))
+        res = self.client.delete(
+            self.network_map_detail_url(network_map.id)
+        )
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(
             models.NetworkMap.objects

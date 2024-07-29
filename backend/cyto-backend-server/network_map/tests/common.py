@@ -1,42 +1,37 @@
 """Shared functionality for Test Cases."""
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from rest_framework import status
 from rest_framework.test import APIClient
 
 from .. import models
 
 
 class BaseAPITests(TestCase):
-    """"""
+    """Base class for Network Map app unit tests."""
     def setUp(self):
         self.client = APIClient()
-        self.endpoint = None # edges or nodes
+        self.endpoint = None  # edges or nodes
 
     def network_map_detail_url(self, network_map_id):
-        """"""
-        return reverse(
-            'network_map:networkmap-detail',
-            args=[network_map_id]
-        )
+        """Reverse lookup the url path for network map detail."""
+        return reverse('network_map:networkmap-detail', args=[network_map_id])
 
     def network_map_list_url(self):
-        """"""
-        return reverse(
-            'network_map:networkmap-list'
-        )
+        """Reverse lookup the url path for network map list."""
+        return reverse('network_map:networkmap-list')
 
     def nested_detail_url(self, network_map_id, nested_id):
-        """"""
+        """Reverse lookup the url path for nested item's details"""
         return reverse(
             f'network_map:{self.endpoint}-detail',
             args=[network_map_id, nested_id]
         )
 
     def nested_list_url(self, network_map_id):
-        """"""
+        """Reverse lookup the url path for nested item's list"""
         return reverse(
             f'network_map:{self.endpoint}-list',
             args=[network_map_id]
@@ -45,7 +40,7 @@ class BaseAPITests(TestCase):
     def create_user(self, **params):
         """Create a test user."""
         defaults = {
-            'email': 'test@example.com',
+            'email': 'test@example.com', 
             'password': 'testpass123'
         }
         defaults.update(params)
@@ -56,15 +51,13 @@ class BaseAPITests(TestCase):
         defaults = {
             'name': 'Test Map',
             'description': 'Test Description',
-            'layout': {
-                'name': 'preset'
-            },
+            'layout': {'name': 'preset'},
             'is_public': False,
         }
         defaults.update(params)
         return models.NetworkMap.objects.create(user=user, **defaults)
 
-    def create_node(self, network_map, parent=None,**params):
+    def create_node(self, network_map, parent=None, **params):
         """Create a test node."""
         defaults = {
             'label': 'Node 1',
@@ -73,27 +66,16 @@ class BaseAPITests(TestCase):
             'classes': 'triangle stuff',
         }
         defaults.update(params)
-        return (
-            models.Node.objects
-            .create(
-                network_map=network_map,
-                parent=parent,
-                **defaults
-            )
+        return models.Node.objects.create(
+            network_map=network_map, parent=parent, **defaults
         )
 
-    def create_edge(self, network_map, source, target,  **params):
+    def create_edge(self, network_map, source, target, **params):
         """Create a test edge."""
         defaults = {
             'label': 'edge label',
         }
         defaults.update(params)
-        return (
-            models.Edge.objects
-            .create(
-                network_map=network_map,
-                source=source,
-                target=target,
-                **defaults
-            )
+        return models.Edge.objects.create(
+            network_map=network_map, source=source, target=target, **defaults
         )

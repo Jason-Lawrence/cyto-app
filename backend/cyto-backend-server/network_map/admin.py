@@ -1,3 +1,4 @@
+"""Register models to the backend."""
 from django.contrib import admin
 from .models import NetworkMap, Node, Edge
 

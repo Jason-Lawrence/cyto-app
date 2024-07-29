@@ -1,4 +1,5 @@
 """Test Node API endpoints."""
+
 from rest_framework import status
 from .common import BaseAPITests
 from .. import models, serializers
@@ -6,6 +7,7 @@ from .. import models, serializers
 
 class PublicNodeAPITests(BaseAPITests):
     """Test unauthenticated requests fail."""
+
     def setUp(self):
         super().setUp()
         self.endpoint = 'node'
@@ -20,6 +22,7 @@ class PublicNodeAPITests(BaseAPITests):
 
 class PrivateNodeAPITests(BaseAPITests):
     """Test Authenticated endpoints."""
+
     def setUp(self):
         super().setUp()
         self.endpoint = 'node'
@@ -55,7 +58,7 @@ class PrivateNodeAPITests(BaseAPITests):
         """Test creating a node."""
         payload = {
             'label': 'Node 1',
-            'x': 1, 
+            'x': 1,
             'y': 1,
             'classes': 'triangle stuff',
         }
@@ -73,9 +76,7 @@ class PrivateNodeAPITests(BaseAPITests):
     def test_partial_update(self):
         """Test partial update of node."""
         node = self.create_node(self.network_map)
-        payload = {
-            'label': 'New node label'
-        }
+        payload = {'label': 'New node label'}
         res = self.client.patch(
             self.nested_detail_url(self.network_map.id, node.id),
             payload
@@ -95,12 +96,8 @@ class PrivateNodeAPITests(BaseAPITests):
             'selectable': False,
             'locked': True,
             'pannable': True,
-            'style': {
-                'width': '50px'
-            },
-            'scratch': {
-                'key1': 'val1'
-            }
+            'style': {'width': '50px'},
+            'scratch': {'key1': 'val1'},
         }
         res = self.client.put(
             self.nested_detail_url(self.network_map.id, node.id),
@@ -119,8 +116,4 @@ class PrivateNodeAPITests(BaseAPITests):
             self.nested_detail_url(self.network_map.id, node.id)
         )
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertFalse(
-            models.Node.objects
-            .filter(id=node.id)
-            .exists()
-        )
+        self.assertFalse(models.Node.objects.filter(id=node.id).exists())

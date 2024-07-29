@@ -6,6 +6,7 @@ from .. import models, serializers
 
 class PublicNodeAPITests(BaseAPITests):
     """Test unauthenticated requests fail."""
+
     def setUp(self):
         super().setUp()
         self.endpoint = 'edge'
@@ -20,6 +21,7 @@ class PublicNodeAPITests(BaseAPITests):
 
 class PrivateNodeAPITests(BaseAPITests):
     """Test Authenticated endpoints."""
+
     def setUp(self):
         super().setUp()
         self.endpoint = 'edge'
@@ -68,9 +70,7 @@ class PrivateNodeAPITests(BaseAPITests):
     def test_partial_update(self):
         """Test partially updating an edge."""
         edge = self.create_edge(self.network_map, self.node1, self.node2)
-        payload = {
-            'label': 'New Edge Label'
-        }
+        payload = {'label': 'New Edge Label'}
         res = self.client.patch(
             self.nested_detail_url(self.network_map.id, edge.id),
             payload
@@ -85,7 +85,7 @@ class PrivateNodeAPITests(BaseAPITests):
         payload = {
             'label': 'New Edge Label',
             'source': self.node2.id,
-            'target': self.node1.id
+            'target': self.node1.id,
         }
         res = self.client.put(
             self.nested_detail_url(self.network_map.id, edge.id),
@@ -105,8 +105,4 @@ class PrivateNodeAPITests(BaseAPITests):
             self.nested_detail_url(self.network_map.id, edge.id)
         )
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertFalse(
-            models.Edge.objects
-            .filter(id=edge.id)
-            .exists()
-        )
+        self.assertFalse(models.Edge.objects.filter(id=edge.id).exists())
