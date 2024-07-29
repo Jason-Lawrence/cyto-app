@@ -132,3 +132,49 @@ class PrivateNetworkMapAPITests(BaseAPITests):
             .filter(id=network_map.id)
             .exists()
         )
+
+    def test_get_cytoscape(self):
+        """Test getting the network map in cytoscape format."""
+        network_map = self.create_network_map(user=self.user)
+
+        node_1 = self.create_node(network_map)
+        node_2 = self.create_node(network_map, **{
+            'label': 'Node 2',
+            'x': 2,
+            'y': 1,
+            'classes': 'square'
+        })
+        node_3 = self.create_node(network_map, **{
+            'label': 'Node 3',
+            'x': 1,
+            'y': 2,
+            'classes': 'circle'
+        })
+
+        self.create_edge(
+            network_map,
+            node_1,
+            node_2,
+            **{'label': 'edge_1'}
+        )
+
+        self.create_edge(
+            network_map,
+            node_2,
+            node_3,
+            **{'label': 'edge_2'}
+        )
+
+        self.create_edge(
+            network_map,
+            node_3,
+            node_1,
+            **{'label': 'edge_3'}
+        )
+        res = self.client.get(
+            self.cytoscape_url(network_map.id)
+        )
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            res.data, self.cytoscapify_network_map(network_map)
+        )
