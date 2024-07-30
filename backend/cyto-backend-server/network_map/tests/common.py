@@ -37,6 +37,13 @@ class BaseAPITests(TestCase):
             args=[network_map_id]
         )
 
+    def cytoscape_url(self, network_map_id):
+        """Reverse lookup the url path for cytoscape."""
+        return reverse(
+            'network_map:networkmap-cytoscape',
+            args=[network_map_id]
+        )
+
     def create_user(self, **params):
         """Create a test user."""
         defaults = {
@@ -79,3 +86,56 @@ class BaseAPITests(TestCase):
         return models.Edge.objects.create(
             network_map=network_map, source=source, target=target, **defaults
         )
+
+    def cytoscapify_node(self, node):
+        """convert Node object into cytoscape format."""
+        return {
+                'group': 'nodes',
+                'data': {
+                    'id': node.nid,
+                    'label': node.label,
+                    'parent': node.parent
+                },
+                'position': {
+                    'x': node.x,
+                    'y': node.y
+                },
+                'selectable': node.selectable,
+                'locked': node.locked,
+                'grabbable': node.grabbable,
+                'classes': node.classes,
+                'style': node.style,
+                'scratch': node.scratch
+            }
+
+    def cytoscapify_edge(self, edge):
+        """Convert Edge object into cytoscape format."""
+        return {
+                'group': 'edges',
+                'data': {
+                    'id': edge.eid,
+                    'label': edge.label,
+                    'source': edge.source.nid,
+                    'target': edge.target.nid
+                },
+                'pannable': edge.pannable
+            }
+
+    def cytoscapify_network_map(self, network_map):
+        """Convert Network Map object into cytoscape format."""
+        nodes = models.Node.objects.filter(network_map=network_map)
+        edges = models.Edge.objects.filter(network_map=network_map)
+
+        node_elements = [
+            self.cytoscapify_node(node)
+            for node in nodes
+        ]
+        edge_elements = [
+            self.cytoscapify_edge(edge)
+            for edge in edges
+        ]
+        elements = node_elements + edge_elements
+        return {
+            'elements': elements,
+            'layout': network_map.layout
+        }
