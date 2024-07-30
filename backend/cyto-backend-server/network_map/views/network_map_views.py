@@ -4,8 +4,10 @@ Views for the Network Map API.
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Q
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from drf_spectacular.utils import extend_schema, OpenApiExample
+from django.db.models import Q
+
 
 from .. import models, serializers
 
@@ -17,8 +19,52 @@ class NetworkMapViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
+    @extend_schema(
+        examples=[
+            OpenApiExample(
+                name='''Format the data for a network
+                    map into cytoscape JSON object.''',
+                description='Return Network Map in cytoscape format.',
+                summary='Cytoscape',
+                value={
+                    'layout': 'network_map.layout',
+                    'elements': [
+                        {
+                          'group': 'nodes',
+                          'data': {
+                              'id': 'node.nid',
+                              'label': 'node.label',
+                              'parent': 'node.parent'
+                          },
+                          'position':{
+                              'x': 'node.x',
+                              'y': 'node.y'
+                          },
+                          'selectable': 'node.selectable',
+                          'locked': 'node.locked',
+                          'grabbable': 'node.grabbable',
+                          'classes': 'node.classes',
+                          'style': 'node.style',
+                          'scratch': 'node.scratch'  
+                        },
+                        {
+                            'group': 'edges',
+                            'data':{
+                                'id': 'edge.eid',
+                                'label': 'edge.label',
+                                'source': 'edge.source.nid',
+                                'target': 'edge.target.nid'
+                            },
+                            'pannable': 'edge.pannable'
+                        }
+                    ]
+                },
+                response_only=True
+            )
+        ]
+    )
     @action(detail=True)
-    def cytoscape(self, request, pk=None):
+    def cytoscape(self, request, pk=None): # pylint: disable=unused-argument
         """Return the Network Map data in cytoscape format."""
         network_map =  self.get_object()
         nodes = models.Node.objects.filter(network_map=network_map)
@@ -66,7 +112,7 @@ class NetworkMapViewSet(viewsets.ModelViewSet):
         }
 
         return Response(cytoscape_data, status=status.HTTP_200_OK)
-    
+
     def get_serializer_class(self):
         """Return the proper serializer class for the request."""
         if self.action in ['list', 'create', 'update']:
