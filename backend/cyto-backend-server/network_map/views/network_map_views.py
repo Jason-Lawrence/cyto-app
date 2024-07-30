@@ -62,9 +62,9 @@ class NetworkMapViewSet(viewsets.ModelViewSet):
                 response_only=True
             )
         ]
-    )    
+    )
     @action(detail=True)
-    def cytoscape(self, request, pk=None):
+    def cytoscape(self, request, pk=None): # pylint: disable=unused-argument
         """Return the Network Map data in cytoscape format."""
         network_map =  self.get_object()
         nodes = models.Node.objects.filter(network_map=network_map)
@@ -112,7 +112,7 @@ class NetworkMapViewSet(viewsets.ModelViewSet):
         }
 
         return Response(cytoscape_data, status=status.HTTP_200_OK)
-    
+
     def get_serializer_class(self):
         """Return the proper serializer class for the request."""
         if self.action in ['list', 'create', 'update']:
