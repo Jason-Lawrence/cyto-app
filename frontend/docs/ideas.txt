@@ -1,0 +1,25 @@
+Color palette:
+    faded black, lavender stars purple ice.
+    --primary-100:#6A5ACD;
+    --primary-200:#9d87ff;
+    --primary-300:#ffeaff;
+    --accent-100:#B0E0E6;
+    --accent-200:#517f84;
+    --text-100:#FFFFFF;
+    --text-200:#e0e0e0;
+    --bg-100:#2B2B2B;
+    --bg-200:#3b3b3b;
+    --bg-300:#545454;
+
+    off white, dessert peach, crystal water
+    --primary-100:#FFE5B4;
+    --primary-200:#e0c797;
+    --primary-300:#998457;
+    --accent-100:#ADD8E6;
+    --accent-200:#4e7884;
+    --text-100:#333333;
+    --text-200:#5c5c5c;
+    --bg-100:#FFFFFF;
+    --bg-200:#f5f5f5;
+    --bg-300:#cccccc;
+      
