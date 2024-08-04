@@ -24,6 +24,7 @@ export class RegisterComponent {
       'password': this.password
     }
     this.authService.registerNewUser(userData)
+    this.router.navigate(['login'])
   }
 
   onSignIn(){
