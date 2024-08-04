@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-xs-12">
+        @if(error){
+            <div class="alert alert-danger">
+                <p>{{ error }}</p>
+            </div>
+        }
+        @if(!isLoading) {
+            <form #loginForm="ngForm" (ngSubmit)="onLogin()">
+                <div class="form-group">
+                    <label for="email">E-Mail</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        class="form-control"
+                        [(ngModel)]="email"
+                        name="email"
+                        required
+                        email>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="form-control"
+                        [(ngModel)]="password"
+                        name="password"
+                        required
+                        minlength="6">
+                </div>
+                <div>
+                    <button class="btn btn-primary" [disabled]="!loginForm.valid">Sign-in</button>
+                </div>
+                <br>
+                <div>
+                    <button class="btn btn-success" (click)="onRegister()">Register</button>
+                </div>
+            </form>
+        }@else{
+            <div style="text-align: center;">
+                <app-loading-spinner></app-loading-spinner>
+            </div>
+        }
+    </div>
+</div>
