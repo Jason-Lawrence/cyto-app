@@ -1,4 +1,4 @@
-import { BehaviorSubject, tap } from "rxjs";
+import { BehaviorSubject, map, switchMap, tap } from "rxjs";
 import { User } from "./user.model";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -54,13 +54,13 @@ export class AuthService {
     onSignIn(email: string, password: string) {
         return this.http.post<{access: string, refresh: string}>(
             `${this.authUrl}token/`, {'email': email, 'password': password}
-        ).pipe(tap(
+        ).pipe(switchMap(
             (resData: {access: string, refresh: string}) => {
                 const headers: HttpHeaders = new HttpHeaders().set('Authorization', `Bearer ${resData.access}`)
-                this.http.get<{email: string, name: string}>(`${this.authUrl}me/`, {'headers': headers}).subscribe(
-                    (userData: {email: string, name: string}) => {
+                return this.http.get<{email: string, name: string}>(`${this.authUrl}me/`, {'headers': headers}).pipe(
+                    tap((userData: {email: string, name: string}) => {
                         this.handlePostAuthentication(userData.email, userData.name, resData.access, resData.refresh)
-                    }
+                    })
                 )
             }
         ))
