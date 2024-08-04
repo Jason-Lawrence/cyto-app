@@ -16,7 +16,7 @@ export class LoginComponent {
   error: string | null = null;
   isLoading = false;
   email: string = 'test@example.com'
-  password: string;
+  password: string = '';
 
   constructor(private router: Router, private authService: AuthService) {}
 
