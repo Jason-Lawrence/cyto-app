@@ -51,6 +51,11 @@ export class AuthService {
         )
     }
 
+    onSignOut(){
+        localStorage.removeItem('userData')
+        this.user.next(null)
+    }
+
     onSignIn(email: string, password: string) {
         return this.http.post<{access: string, refresh: string}>(
             `${this.authUrl}token/`, {'email': email, 'password': password}
