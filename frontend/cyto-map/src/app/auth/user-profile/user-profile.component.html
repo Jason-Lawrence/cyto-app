@@ -1,1 +1,7 @@
-<p>user-profile works!</p>
+<div class="row">
+    <div class="col-xs-12">
+        <h1>Welcome {{ user.name }}</h1>
+        <p>email: {{ user.email }}</p>
+        <button type="button" class="" (click)="onEdit()">Edit</button>
+    </div>
+</div>

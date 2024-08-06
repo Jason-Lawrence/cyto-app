@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-xs-12">
+        @if(error){
+            <p>{{ error }}</p>
+        }
+        <form #userEditForm="ngForm" (ngSubmit)="onUpdateUser()">
+            <div class="form-group">
+                <label for="email"></label>
+                <input 
+                    type="email"
+                    id="email"
+                    class="from-control"
+                    [(ngModel)]="email"
+                    name="email"
+                    email>
+            </div>
+            <div class="form-group">
+                <label for=""></label>
+            </div>
+        </form>
+    </div>
+</div>
