@@ -1,7 +1,7 @@
-import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpInterceptorFn, HttpRequest } from "@angular/common/http";
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { exhaustMap, Observable, take } from "rxjs";
 import { AuthService } from "./auth.service";
 import { SigninDialogComponent } from "./signin-dialog/signin-dialog.component";
@@ -19,6 +19,7 @@ export class AuthInterceptorService implements HttpInterceptor {
                 if (!user) {
                     return next.handle(req)
                 }
+                console.log('checking token...')
                 if (this.authservice.isTokenExpired(user.access_token)){
                     if (this.authservice.isTokenExpired(user.refresh_token)){
                         this.dialog.open(SigninDialogComponent).afterClosed().subscribe(() =>{
@@ -35,4 +36,32 @@ export class AuthInterceptorService implements HttpInterceptor {
             })
         )
     }
+}
+
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+    const authService = inject(AuthService);
+    const router = inject(Router);
+    const dialog = inject(MatDialog);
+    return authService.user.pipe(
+        take(1),
+        exhaustMap(user => {
+            if (!user) {
+                return next(req)
+            }
+            console.log('checking token...');
+            if(authService.isTokenExpired(user.access_token)){
+                if(authService.isTokenExpired(user.refresh_token)) {
+                    dialog.open(SigninDialogComponent).afterClosed().
+                        subscribe(() =>{
+                            router.navigate(['/login']);
+                        }
+                    )
+                }else{
+                    authService.refreshToken();
+                }
+            }
+            const modifiedReq = req.clone({headers: new HttpHeaders().set('Authorization', `Bearer ${user.access_token}`)})
+            return next(modifiedReq)
+        })
+    )
 }
