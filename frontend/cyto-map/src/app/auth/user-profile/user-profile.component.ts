@@ -2,12 +2,12 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
 import { User } from '../user.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss'
 })

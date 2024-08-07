@@ -5,17 +5,40 @@
         }
         <form #userEditForm="ngForm" (ngSubmit)="onUpdateUser()">
             <div class="form-group">
-                <label for="email"></label>
+                <label for="name">Name</label>
                 <input 
-                    type="email"
-                    id="email"
-                    class="from-control"
-                    [(ngModel)]="email"
-                    name="email"
-                    email>
+                    type="text" 
+                    class="form-control"
+                    id="name"
+                    [(ngModel)]="name"
+                    name="name">
             </div>
-            <div class="form-group">
-                <label for=""></label>
+            @if(resetPassword){
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input 
+                        type="password" 
+                        class="form-control"
+                        id="newPassword"
+                        [(ngModel)]="newPassword"
+                        name="newPassword">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        class="form-control"
+                        id="confirmPassword"
+                        [(ngModel)]="confirmPassword"
+                        name="confirmPassword">
+                </div>
+                <button type="button" (click)="onCancelReset()">Cancel</button>
+            }@else{
+                <button type="button" (click)="onResetPassword()">Reset Password</button>
+            }
+            <div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
             </div>
         </form>
     </div>

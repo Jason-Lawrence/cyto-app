@@ -84,5 +84,12 @@ export class AuthService {
             )
         }
         return
-    } 
+    }
+    
+    onUpdateUser(data: any){
+        this.http.put(`${this.authUrl}me/`, data).subscribe(
+            respData => {
+                console.log(respData)
+            })
+    }
 }
