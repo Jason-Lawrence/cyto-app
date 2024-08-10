@@ -18,4 +18,7 @@ nested.register('edges', views.EdgeViewSet)
 
 app_name = 'network_map'
 
-urlpatterns = [path('', include(router.urls)), path('', include(nested.urls))]
+urlpatterns = [
+    path('', include(router.urls)),
+    path('', include(nested.urls))
+]

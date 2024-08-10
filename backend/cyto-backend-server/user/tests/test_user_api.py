@@ -146,6 +146,14 @@ class PrivateUserAPITests(TestCase):
         self.user = self.create_user(**user_details)
         self.client.force_authenticate(user=self.user)
 
+    def PAT_list(self):
+        """Reverse url for PATs"""
+        return reverse('user:personalaccesstoken-list')
+
+    def PAT_detail(self, pat_id):
+        """Generate detail url for PAT."""
+        return reverse('user:personalaccesstoken-detail', args=[pat_id])
+
     def create_user(self, **params):
         """Create a new user."""
         return get_user_model().objects.create_user(**params)
@@ -164,3 +172,32 @@ class PrivateUserAPITests(TestCase):
         self.user.refresh_from_db()
         self.assertEqual(self.user.name, payload.get('name'))
         self.assertTrue(self.user.check_password(payload.get('password')))
+
+    def test_create_PAT(self):
+        """Test creating a PAT for the user."""
+        payload = {
+            'name': 'Test_Token',
+        }
+        
+        res = self.client.post(self.PAT_list(), payload)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        PAT = PersonalAccessToken.objects.get(id=res.data.get('id'))
+        self.assertEqual(PAT.name, payload.get('name'))
+        self.assertEqual(PAT.expires, None)
+
+    def test_create_PAT_with_expiration(self):
+        """
+        Test create a personal access token that has an
+        expiration date.
+        """
+        payload = {
+            'name': 'Test_Token',
+            'expires': date(2025, 1, 1)
+        }
+        res = self.client.post(self.PAT_list(), payload, format='json')
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        PAT = PersonalAccessToken.objects.get(id=res.data.get('id'))
+        self.assertEqual(PAT.name, payload.get('name'))
+        self.assertEqual(PAT.expires, payload.get('expires'))
