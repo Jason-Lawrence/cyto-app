@@ -1,6 +1,7 @@
 <tr>
     <th scope="row">{{ accessToken.name }}</th>
     <td>{{ accessToken.token }}</td>
+    <td>{{ accessToken.created}}</td>
     <td>{{ accessToken.expires }}</td>
     @if (accessToken.is_revoked){
         <td>Revoked</td>
