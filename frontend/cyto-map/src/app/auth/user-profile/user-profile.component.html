@@ -1,8 +1,20 @@
 <div class="row">
-    <div class="col-xs-12">
-        <h1>Welcome {{ user.name }}</h1>
-        <p>email: {{ user.email }}</p>
-        <button type="button" class="" (click)="onEdit()">Edit</button>
+    <div class="col-lg-3 col-md-4 col-sm-12">
+        <h4>User Profile</h4>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" routerLink="details" routerLinkActive="active">Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="access-token" routerLinkActive="active">Access Tokens</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="preferences" routerLinkActive="active">Preferences</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-lg-9 col-md-8 col-sm-12">
+        <h1>User Settings</h1>
+        <router-outlet></router-outlet>
     </div>
 </div>
-<router-outlet></router-outlet>

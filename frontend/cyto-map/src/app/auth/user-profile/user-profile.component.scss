@@ -1,0 +1,12 @@
+.nav-link {
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link.active {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}

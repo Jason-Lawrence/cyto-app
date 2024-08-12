@@ -1,0 +1,22 @@
+<div class="row">
+    <h2>Personal Access Tokens</h2>
+    <button class="btn btn-success" (click)="onCreateToken()">Create</button>
+</div>
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Token</th>
+                <th scope="col">Expires</th>
+                <th scope="col">Revoke</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(token of accessTokens; track token.id) {
+                <app-access-token [accessToken]="token"></app-access-token>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,24 +1,24 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { AuthService } from '../../auth.service';
-import { User } from '../../user.model';
+import { AuthService } from '../../../auth.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { User } from '../../../user.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-user-profile-edit',
+  selector: 'app-user-detail-edit',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './user-profile-edit.component.html',
-  styleUrl: './user-profile-edit.component.scss'
+  templateUrl: './user-detail-edit.component.html',
+  styleUrl: './user-detail-edit.component.scss'
 })
-export class UserProfileEditComponent implements OnInit, OnDestroy{
+export class UserDetailEditComponent implements OnInit, OnDestroy{
   error: string | null = null;
-  resetPassword: boolean = false
+  resetPassword: boolean = false;
   authService = inject(AuthService)
   router = inject(Router)
   userSub: Subscription;
-  user!: User
+  user!: User;
   name: string = '';
   confirmPassword: string = '';
   newPassword: string = '';
@@ -26,7 +26,7 @@ export class UserProfileEditComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe(
       (user: User | null) => {
-        if(user){
+        if(user) {
           this.user = user
           this.name = user.name
         }
@@ -37,30 +37,31 @@ export class UserProfileEditComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     this.userSub.unsubscribe()
   }
-
-  onResetPassword(){
+  onResetPassword(): void {
     this.resetPassword = true;
   }
 
-  onCancelReset(){
+  onCancelReset(): void {
     this.resetPassword = false;
     this.confirmPassword = '';
-    this.newPassword = '';
+    this.newPassword = ''; 
   }
 
-  onCancel(){
+  onCancel(): void {
     this.router.navigate(['profile'])
   }
 
-  onUpdateUser(){
+  onUpdateUser(): void {
     var data;
-    if (this.newPassword.length > 0 && this.newPassword !== this.confirmPassword){
-      let data = {
-        name: this.name,
-        password: this.newPassword
-      }
-    }else{
-      let data = {
+    if (this.newPassword.length > 0 && 
+        this.newPassword === this.confirmPassword
+      ){
+        data = {
+          name: this.name,
+          password: this.newPassword
+        }
+    } else {
+      data = {
         name: this.name
       }
     }

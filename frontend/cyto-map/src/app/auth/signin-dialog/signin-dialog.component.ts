@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog'
+import { MatDialogRef, MatDialogModule } from '@angular/material/dialog'
 
 @Component({
   selector: 'app-signin-dialog',
   standalone: true,
-  imports: [],
+  imports: [MatDialogModule],
   templateUrl: './signin-dialog.component.html',
   styleUrl: './signin-dialog.component.scss'
 })

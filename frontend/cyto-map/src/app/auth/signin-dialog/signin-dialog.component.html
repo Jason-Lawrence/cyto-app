@@ -1,6 +1,8 @@
-<div class="backdrop"></div>
-<dialog open>
-    <h2>Session Expired</h2>
+<h2 mat-dialog-title>Session Expired</h2>
+<mat-dialog-content>
     <p>Please login again.</p>
-    <button type="button" (click)="onClose()">OK</button>
-</dialog>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onClose()">OK</button>
+</mat-dialog-actions>
+
