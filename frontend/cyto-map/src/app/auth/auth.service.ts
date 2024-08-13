@@ -1,4 +1,4 @@
-import { BehaviorSubject, map, switchMap, tap } from "rxjs";
+import { BehaviorSubject, map, of, switchMap, tap } from "rxjs";
 import { User } from "./user.model";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -16,7 +16,9 @@ export class AuthService {
 
     isTokenExpired(token: string): boolean {
         const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
-        return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+        const decision = (Math.floor((new Date).getTime() / 1000)) >= expiry
+        console.log('expired: ' + decision)
+        return decision
     }
 
     autoLogin(){
@@ -51,6 +53,11 @@ export class AuthService {
         )
     }
 
+    onSignOut(){
+        localStorage.removeItem('userData')
+        this.user.next(null)
+    }
+
     onSignIn(email: string, password: string) {
         return this.http.post<{access: string, refresh: string}>(
             `${this.authUrl}token/`, {'email': email, 'password': password}
@@ -72,12 +79,25 @@ export class AuthService {
             return this.http.post<{access: string}>(
                 `${this.authUrl}token/refresh/`, {refresh: current_user.refresh_token}
             ).pipe(
-                tap((resData) => {
-                    current_user.access_token = resData.access
-                    localStorage.setItem('userData', JSON.stringify(current_user))
-                })
+                tap(resData => {
+                    const updatedUser = new User(
+                        current_user.email,
+                        current_user.name,
+                        resData.access,
+                        current_user.refresh_token
+                    );
+                    localStorage.setItem('userData', JSON.stringify(updatedUser))
+                    this.user.next(updatedUser)
+                }
             )
-        }
-        return
-    } 
+        )}
+        return of();
+    }
+    
+    onUpdateUser(data: any){
+        this.http.patch(`${this.authUrl}me/`, data).subscribe(
+            respData => {
+                console.log(respData)
+            })
+    }
 }

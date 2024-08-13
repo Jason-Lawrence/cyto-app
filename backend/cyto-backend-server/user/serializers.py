@@ -1,7 +1,8 @@
 """
 Serializers for the User API endpoints.
 """
-
+from datetime import date
+from .models import PersonalAccessToken 
 from django.contrib.auth import get_user_model, authenticate
 from django.utils.translation import gettext as _
 
@@ -53,3 +54,35 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs["user"] = user
         return attrs
+
+
+class PATCreateSerializer(serializers.ModelSerializer):
+    """"""
+    class Meta:
+        model = PersonalAccessToken
+        fields = [
+            'name', 'expires',
+        ]
+
+    def create(self, validated_data):
+        """Create a New Personal Access Token."""
+        token, PAT = PersonalAccessToken.objects.create(
+            **validated_data,
+        )
+        return token, PAT
+
+
+class PATSerializer(PATCreateSerializer):
+    """"""
+    class Meta(PATCreateSerializer.Meta):
+        fields = PATCreateSerializer.Meta.fields + [
+            'id', 'created', 'revoked', 'is_expired'
+        ]
+    
+    def update(self, instance, validated_data):
+        """"""
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
