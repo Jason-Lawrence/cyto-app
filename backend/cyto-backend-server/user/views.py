@@ -52,6 +52,7 @@ class PATViewSet(viewsets.ModelViewSet):
         response_data = {
             'id': PAT.id,
             'name': PAT.name,
+            'created': PAT.created,
             'token': token,
             'revoked': PAT.revoked,
             'expires': PAT.expires,

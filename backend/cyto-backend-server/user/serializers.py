@@ -81,11 +81,6 @@ class PATSerializer(PATCreateSerializer):
     
     def update(self, instance, validated_data):
         """"""
-        does_expire = date(validated_data.pop('expires', None))
-        if does_expire:
-            expires_date = date(does_expire)
-            setattr(instance, 'expires', expires_date)
-
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
