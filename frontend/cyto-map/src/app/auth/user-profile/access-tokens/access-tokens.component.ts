@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AccessToken } from './access-token/access-token.model';
-import { AccessTokenComponent } from './access-token/access-token.component';
+import { AccessToken } from './access-token.model';
 import { AccessTokenService } from './access-token.service';
 import { MatDialog } from '@angular/material/dialog'
 import { AccessTokenCreateComponent } from './access-token-create/access-token-create.component';
@@ -8,7 +7,7 @@ import { AccessTokenCreateComponent } from './access-token-create/access-token-c
 @Component({
   selector: 'app-access-tokens',
   standalone: true,
-  imports: [AccessTokenComponent],
+  imports: [],
   templateUrl: './access-tokens.component.html',
   styleUrl: './access-tokens.component.scss'
 })
@@ -28,5 +27,14 @@ export class AccessTokensComponent implements OnInit{
 
   onCreateToken() {
     this.dialog.open(AccessTokenCreateComponent)
+  }
+
+  onRevokeToken(token: AccessToken){
+    this.tokenService.revokeToken(token.id)
+    token.is_revoked = true
+  }
+  
+  onDeleteToken(token: AccessToken) {
+    this.tokenService.deleteToken(token)
   }
 }

@@ -7,7 +7,6 @@
         <thead>
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Token</th>
                 <th scope="col">Created</th>
                 <th scope="col">Expires</th>
                 <th scope="col">Revoke</th>
@@ -16,7 +15,21 @@
         </thead>
         <tbody>
             @for(token of accessTokens; track token.id) {
-                <app-access-token [accessToken]="token"></app-access-token>
+                <tr>
+                    <th scope="row">{{ token.name }}</th>
+                    <td>{{ token.created}}</td>
+                    @if( token.expires !== null) {
+                        <td>{{ token.expires }}</td>
+                    } @else {
+                        <td>Never</td>
+                    }
+                    @if (token.is_revoked){
+                        <td>Revoked</td>
+                    } @else {
+                        <td><button class="btn btn-danger" (click)="onRevokeToken(token)">Revoke</button></td>
+                    }
+                    <td><button class="btn btn-danger" (click)="onDeleteToken(token)">Delete</button></td>
+                </tr>
             }
         </tbody>
     </table>
