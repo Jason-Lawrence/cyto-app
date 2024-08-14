@@ -17,7 +17,6 @@ export class AccessTokenService {
     constructor(private http: HttpClient, private dialog: MatDialog) {}
 
     listTokens() {
-        console.log()
         this.http.get<AccessToken[]>(this.tokenUrl).subscribe(
             (tokens: AccessToken[]) => {
                 this.accessTokensSubject.next(tokens);

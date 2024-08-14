@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { GraphComponent} from './graph/graph.component'
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component'
 import { authorizedMatch } from './auth/auth.guard';
@@ -8,12 +7,13 @@ import { UserDetailComponent } from './auth/user-profile/user-detail/user-detail
 import { UserDetailEditComponent } from './auth/user-profile/user-detail/user-detail-edit/user-detail-edit.component';
 import { AccessTokensComponent } from './auth/user-profile/access-tokens/access-tokens.component'
 import { PreferencesComponent } from './auth/user-profile/preferences/preferences.component'
+import { NetworkMapComponent } from './network-map/network-map.component';
 
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent},
-    {path: '', component: GraphComponent, canMatch: [authorizedMatch]},
+    {path: '', component: NetworkMapComponent, canMatch: [authorizedMatch]},
     {
         path: 'profile', 
         component: UserProfileComponent, 
