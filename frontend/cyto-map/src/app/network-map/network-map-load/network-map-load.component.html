@@ -1,1 +1,24 @@
-
+<h2 mat-dialog-title>Load Network Map</h2>
+<mat-dialog-content>
+    <form (ngSubmit)="onLoad()">
+        <div class="form-group">
+            <select 
+                class="form-select" 
+                size="5" 
+                aria-label="Network Map Select" 
+                [(ngModel)]="network_map_id"
+                name="network_map_id">
+                    <option selected>Choose a Network Map</option>
+                    @for(network_map of network_maps; track network_map.id){
+                        <option [value]="network_map.id">
+                            {{ network_map.name }}
+                        </option>
+                    }
+            </select>
+        </div>
+        <div>
+            <button class="btn btn-success">Load</button>
+            <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+        </div>
+    </form>
+</mat-dialog-content>

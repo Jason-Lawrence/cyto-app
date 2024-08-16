@@ -44,6 +44,10 @@ export class NetworkMapService {
                 this.network_maps_subject.next(
                     current_network_maps.filter(network_map => network_map.id !== network_map_to_delete.id)
                 )
+                const current = this.network_map_subject.getValue();
+                if (current && current.id === network_map_to_delete.id) {
+                    this.network_map_subject.next(null)
+                }
             }
         )
     }
@@ -67,6 +71,4 @@ export class NetworkMapService {
     getNetworkMapCytoscape(network_map_id: number) {
         return this.http.get(`${this.network_map_url}${network_map_id}/cytoscape/`)
     }
-
-
 }

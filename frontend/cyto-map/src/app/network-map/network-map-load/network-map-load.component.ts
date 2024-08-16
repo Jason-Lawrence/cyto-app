@@ -17,6 +17,7 @@ export class NetworkMapLoadComponent implements OnInit, OnDestroy{
   networkmap_service = inject(NetworkMapService)
   network_maps_sub: Subscription;
   network_maps: NetworkMap[];
+  network_map_id: number;
 
   ngOnInit(): void {
     this.network_maps_sub = this.networkmap_service.network_maps.subscribe(
@@ -31,6 +32,11 @@ export class NetworkMapLoadComponent implements OnInit, OnDestroy{
   }
 
   onLoad(){
-    
+    this.networkmap_service.getNetworkMap(this.network_map_id)
+    this.dialogRef.close()
+  }
+
+  onCancel() {
+    this.dialogRef.close()
   }
 }

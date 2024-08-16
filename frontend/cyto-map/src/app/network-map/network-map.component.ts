@@ -25,6 +25,7 @@ export class NetworkMapComponent implements OnInit, OnDestroy {
   network_map_sub: Subscription;
 
   ngOnInit(): void {
+    this.networkmapService.listNetworkMaps()
     this.network_map_sub = this.networkmapService.network_map_select.subscribe(
       network_map => {
         this.network_map = network_map

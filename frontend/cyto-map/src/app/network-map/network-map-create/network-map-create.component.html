@@ -11,6 +11,7 @@
                 [(ngModel)]="name"
                 required>
         </div>
+        <br>
         <div class="form-group">
             <label for="description">Description</label>
             <input 
@@ -21,16 +22,18 @@
                 [(ngModel)]="description"
                 required>
         </div>
+        <br>
         <div class="form-group">
-            <label for="public">Public?</label>
             <input 
                 type="checkbox" 
                 name="public" 
                 id="public"
-                class="form-control"
+                class="btn-check"
                 [(ngModel)]="is_public"
                 >
+            <label class="btn btn-outline-primary" for="public">Public</label>
         </div>
+        <br>
         <div class="form-group">
             <label for="layout">Layout</label>
             <select 
@@ -43,6 +46,7 @@
                 <option value="grid">grid</option>
             </select>
         </div>
+        <br>
         <div>
             <button class="btn btn-success">Create</button>
             <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
