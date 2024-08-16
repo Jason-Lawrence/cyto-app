@@ -1,1 +1,51 @@
-<p>network-map-create works!</p>
+<h2 mat-dialog-title>New Network Map</h2>
+<mat-dialog-content>
+    <form (ngSubmit)="onCreate()">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input 
+                type="text"
+                name="name"
+                id="name"
+                class="form-control"
+                [(ngModel)]="name"
+                required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input 
+                type="text" 
+                name="description" 
+                id="description"
+                class="form-control"
+                [(ngModel)]="description"
+                required>
+        </div>
+        <div class="form-group">
+            <label for="public">Public?</label>
+            <input 
+                type="checkbox" 
+                name="public" 
+                id="public"
+                class="form-control"
+                [(ngModel)]="is_public"
+                >
+        </div>
+        <div class="form-group">
+            <label for="layout">Layout</label>
+            <select 
+                name="layout" 
+                id="layout"
+                class="form-control"
+                [(ngModel)]="layout">
+                <option value="preset">preset</option>
+                <option value="circle">circle</option>
+                <option value="grid">grid</option>
+            </select>
+        </div>
+        <div>
+            <button class="btn btn-success">Create</button>
+            <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+        </div>
+    </form>
+</mat-dialog-content>

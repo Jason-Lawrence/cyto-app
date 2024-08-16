@@ -27,8 +27,8 @@ export class NetworkMapService {
         );
     }
 
-    createNetworkMap(network_map: NetworkMap) {
-        return this.http.post<NetworkMap>(this.network_map_url, network_map).subscribe(
+    createNetworkMap(network_map_data: {name: string, description: string, is_public: boolean, layout: string}) {
+        return this.http.post<NetworkMap>(this.network_map_url, network_map_data).subscribe(
             (new_network_map: NetworkMap) => {
                 this.network_map_subject.next(new_network_map)
                 const current_network_maps = this.network_maps_subject.getValue()
