@@ -1,0 +1,14 @@
+<div class="node-edge-select">
+    <!-- Three-dot icon -->
+    <div class="toggle-button" (click)="toggleExpand()">
+        <mat-icon>more_horiz</mat-icon>
+    </div>
+
+    <!-- Collapsible rectangle -->
+    <div class="collapsible-rectangle" [ngClass]="{ 'expanded': isExpanded }">
+        <!-- Your content goes here -->
+        <p>Select your nodes and edges here.</p>
+        <!-- Add more content as needed -->
+    </div>
+</div>
+
