@@ -1,0 +1,12 @@
+<div class="node-grid">
+    @for(node of nodes; track node.id){
+        <div class="node-item" cdkDrag [cdkDragData]="node" [cdk]>
+            <div class="node-icon">
+                <img [src]="node.icon" [alt]="node.name">
+            </div>
+            <div class="node-name">
+                {{ node.name }}
+            </div>
+        </div>
+    }
+</div>

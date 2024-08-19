@@ -22,12 +22,12 @@
         overflow: hidden;
         transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
         background-color: #ffffff;
-        border: 1px solid #ccc;
+        border-right: 1px solid #ccc;
         padding: 15px;
         opacity: 0;
 
         &.expanded {
-            max-height: 300px; /* Adjust this value to the height you want when expanded */
+            max-height: 1000px; /* Adjust this value to the height you want when expanded */
             opacity: 1;
         }
     }

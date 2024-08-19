@@ -1,6 +1,6 @@
 <div class="row">
     <div id="cy-container">
         <app-node-edge-select></app-node-edge-select>
-        <div id="cy"></div>
+        <div id="cy" cdkDropList (cdkDropListDropped)="onDrop($event)"></div>
     </div>
 </div>
