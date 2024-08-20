@@ -1,6 +1,6 @@
 <div class="node-grid">
     @for(node of nodes; track node.id){
-        <div class="node-item" cdkDrag [cdkDragData]="node" [cdk]>
+        <div class="node-item" (click)="selectNode(node.name)" [class.selected]="selectedNode === node.name">
             <div class="node-icon">
                 <img [src]="node.icon" [alt]="node.name">
             </div>

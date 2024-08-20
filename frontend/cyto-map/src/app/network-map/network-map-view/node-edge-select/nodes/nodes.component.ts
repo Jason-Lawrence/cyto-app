@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { Component, inject } from '@angular/core';
+import cytoscape from 'cytoscape';
+import { CytoscapeService } from '../../cytoscape.service';
 
 @Component({
   selector: 'app-nodes',
   standalone: true,
-  imports: [DragDropModule],
+  imports: [],
   templateUrl: './nodes.component.html',
   styleUrl: './nodes.component.scss'
 })
@@ -31,4 +32,11 @@ export class NodesComponent {
       name: 'rectangle'
     }
   ]
+  cytoscape_service = inject(CytoscapeService)
+  selectedNode: string | null = null;
+
+  selectNode(nodeType: string) {
+    this.selectedNode = nodeType
+    this.cytoscape_service.selectedNodeType = nodeType
+  }
 }
